@@ -9,11 +9,6 @@ class Args(object):
         index = self.args.index(arg) + 1
         path = self.args[index]
         if path:
-#            if os.path.isfile(path):
-#                return path
-#            else:
-#                print("parameter error")
-#                exit()
             return path
         else:
             print("no parameter")
@@ -44,10 +39,10 @@ class InComeTaxCalculator(object):
         userdata = udclass.get_userdata()# list
         config = cfgclass.get_config()# dictionary
         # print(cfgclass.get_config('JiShuH'))
-        for s in userdata:
-            single = []
-            for i in s:
-                single.append(i)
+        for single in userdata:
+            # single = []
+            # for i in s:
+            #     single.append(i)
             id = single[0]
             salary = int(single[1])
             premium = 0
