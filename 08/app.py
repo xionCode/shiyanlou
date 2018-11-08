@@ -40,26 +40,42 @@ class File(db.Model):
 		return '<File: %r> ' %self.title
 
 	def add_tag(self, tag_name):
+		tag_id = self.id
+		tag_list = self.tags
+		if tag_name not in tag_list:			
+			tag_list.append(tag_name)
+			mongodb.tags.update_one({'id': tag_id}, {'$set': {'tag_list': tag_list}})
 
-		# if tag_name in tags:
-		mongodb.tags.insert_one({'tag': tag_name})
+	def remove_tag(self, tag_name):
+		tag_id = self.id
+		tag_list = self.tags
+		if tag_name in tag_list:
+			tag_list.remove(tag_name)
+			mongodb.tags.update_one({'id': tag_id}, {'$set': {'tag_list': tag_list}})
 
 	@property 
 	def tags(self):
-		tag_list = []
-		for i in mongodb.tags.find():
-			tag_list.append(i['tag'])
-		return tag_list
-
+		tag_id = self.id
+		init_item = {'id': tag_id, 'tag_list': []}
+		item = mongodb.tags.find_one({'id': tag_id})
+		if item:
+			return item['tag_list']
+		mongodb.tags.insert_one(init_item)
+		return init_item['tag_list']
 
 @app.route('/')
 def index():
-	dct = {}
+	l = []
 	files = db.session.query(File).all()
 	for f in files:
 		category = db.session.query(Category).filter(Category.id==f.category_id).first()
-		dct[f.title] = category.name
-	return render_template('index.html', category_dct=dct)
+		tags_item = mongodb.tags.find_one({'id': f.id})
+		if tags_item:
+			tags = tags_item['tag_list']
+		else:
+			tags = []
+		l.append({'title': f.title, 'name': category.name, 'tags': tags})
+	return render_template('index.html', category_list=l)
 
 @app.route('/files/<filename>')
 def file(filename):

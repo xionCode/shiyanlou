@@ -1,3 +1,9 @@
-{% for value in category_dct %}
-	<a href="/files/{{category_dct[value]}}">{{value}}</a>
+{% for item in category_list %}
+	<a href="/files/{{item['name']}}">{{item['title']}}</a>
+	{% if item['tags'] %}
+		{% for tag in item['tags'] %}
+			<span>{{tag}}</span>
+		{% endfor %}
+	{% endif %}
+	<br>
 {% endfor %}
