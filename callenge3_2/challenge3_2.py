@@ -11,8 +11,12 @@ def combine():
     2. 保存原数据文件
     '''
     wb = load_workbook('courses.xlsx')
-    
+    studentsSheet = wb['students']
+    combineSheet = wb.copy_worksheet(studentsSheet)
+    combineSheet.title = 'combine'
 
+    
+    wb.save('courses2.xlsx')
 
 
 
@@ -25,13 +29,9 @@ def split():
     2. 将数据按时间分割
     3. 写入不同的数据表中
     '''
-    TODO
+    
 
 # 执行
 if __name__ == '__main__':
     combine()
     split()
-
-来源: 实验楼
-链接: https://www.shiyanlou.com/courses/1140
-本课程内容，由作者授权实验楼发布，未经允许，禁止转载、下载及非法传播
