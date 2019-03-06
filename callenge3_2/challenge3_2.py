@@ -26,7 +26,7 @@ def combine():
                 combine_sheet.cell(row=cell_row, column=4,value=row[2].value)
                 break
     
-    wb.save('courses4.xlsx')
+    wb.save('courses.xlsx')
 
 def split():
     '''
@@ -35,7 +35,23 @@ def split():
     2. 将数据按时间分割
     3. 写入不同的数据表中
     '''
+    combine_sheet = wb['combine']
     year_list = []
+    for row in combine_sheet.values:
+        if row[0] != '创建时间':
+            year_list.append(row[0].strftime('%Y'))
+    
+    for year in set(year_list):
+        wb_temp = Workbook()
+        ws = wb_temp.active
+        ws.title = year
+        ws.append(['创建时间','课程名称','学习人数','学习时间'])
+        for row in combine_sheet.values:
+            if row[0] != '创建时间':
+                if row[0].strftime('%Y') == year:
+                    ws.append(row)
+        
+        wb_temp.save('{}.xlsx'.format(year))
     
 
 # 执行
