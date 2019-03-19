@@ -28,21 +28,28 @@ def main():
     1. 解析文件就是分离不同类型数据（IP，时间，状态码等）
     2. 从解析后的文件中统计挑战需要的信息
     '''
-    get_statistics = {}
-    404_statistics = {}
+    ip_dict = {}
+    url_dict = {}
 
     for log in logs:
         d = datetime.strptime(log[1], '%d/%b/%Y:%H:%M:%S +0800')
         if d.year == 2017 and d.month == 1 and d.day == 11:
             ip = log[0]
-            if ip in get_statistics:
-                get_statistics[ip] += 1
+            if ip in ip_dict:
+                ip_dict[ip] += 1
             else:
-                get_statistics[ip] = 1
+                ip_dict[ip] = 1
+
+        if log[3] == '404':
+            url = log[2]
+            if url in url_dict:
+                url_dict[url] += 1
+            else:
+                url_dict[url] = 1
+        
     return ip_dict, url_dict
 
 
 if __name__ == '__main__':
     ip_dict, url_dict = main()
     print(ip_dict, url_dict)
-    main()
