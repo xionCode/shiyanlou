@@ -49,7 +49,7 @@ def main():
         
         x1 = sorted(ip_dict.items(), key=lambda item : item[1])
         x2 = sorted(url_dict.items(), key=lambda item : item[1])
-    return x1[-1], x2[-1]
+    return {x1[-1][0] : x1[-1][1]}, {x2[-1][0] : x2[-1][1]}
 
 
 if __name__ == '__main__':
