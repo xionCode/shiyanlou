@@ -47,7 +47,9 @@ def main():
             else:
                 url_dict[url] = 1
         
-    return ip_dict, url_dict
+        x1 = sorted(ip_dict.items(), key=lambda item : item[1])
+        x2 = sorted(url_dict.items(), key=lambda item : item[1])
+    return x1[-1], x2[-1]
 
 
 if __name__ == '__main__':
